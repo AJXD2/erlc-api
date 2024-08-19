@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "erlc-py"
+version = "0.1.0"
+description = "A simple API wrapper for the Emergency Response Liberty County server API."
+authors = ["AJXD2 <aj@ajxd2.dev>"]
+license = "MIT"
+readme = "README.md"
+packages = [{include = "erlc"}]
+
+[tool.poetry.dependencies]
+python = "^3.12"
+requests = "^2.32.3"
+pydantic = "^2.8.2"
+rich = "^13.7.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
