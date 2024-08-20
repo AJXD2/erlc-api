@@ -1,12 +1,8 @@
 from pydantic import BaseModel
-from typing import Literal, TYPE_CHECKING
-
-if TYPE_CHECKING:
-    from erlc.client import ErlcServerClient
+from typing import Literal
 
 
 class Server(BaseModel):
-    client: "ErlcServerClient"
     name: str
     owner_id: int
     co_owner_ids: list[int]
@@ -16,17 +12,24 @@ class Server(BaseModel):
     acc_verified_req: Literal["Disabled", "Email", "Phone/ID"]
     team_balance: bool
 
-    def refresh(self):
+    def refresh(self) -> "Server":
         """
         Refresh the server data.
         """
-        self = self.client.get_server()
+        new_data = self.client.get_server()
+        self.name = new_data.name
+        self.owner_id = new_data.owner_id
+        self.co_owner_ids = new_data.co_owner_ids
+        self.current_players = new_data.current_players
+        self.max_players = new_data.max_players
+        self.join_key = new_data.join_key
+        self.acc_verified_req = new_data.acc_verified_req
+        self.team_balance = new_data.team_balance
         return self
 
     @classmethod
-    def from_dict(cls, data: dict, client: "ErlcServerClient") -> "Server":
+    def from_dict(cls, data: dict) -> "Server":
         return cls(
-            client=client,
             name=data["Name"],
             owner_id=data["OwnerId"],
             co_owner_ids=data["CoOwnerIds"],

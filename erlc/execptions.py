@@ -18,3 +18,15 @@ class InvalidApiKey(ErlcExecption):
 
     def __str__(self) -> str:
         return f"Invalid API key: {self.client.api_key if self.client else 'Unknown'}"
+
+
+class RateLimitExceeded(ErlcExecption):
+    def __init__(
+        self, message: str = "Rate limit exceeded", client: "ErlcServerClient" = None
+    ) -> None:
+        super().__init__(message, client)
+
+    def __str__(self) -> str:
+        return (
+            f"Rate limit exceeded: {self.client.api_key if self.client else 'Unknown'}"
+        )
