@@ -1,3 +1,3 @@
-from erlc.client import ErlcServerClient
+from erlc.client import ErlcClient
 
-__all__ = ["ErlcServerClient"]
+__all__ = [ErlcClient]

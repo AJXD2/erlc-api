@@ -10,7 +10,9 @@ class Permission(Enum):
     Permission enum
     """
 
+    REMOTE = "Remote Server"
     OWNER = "Server Owner"
+    ADMIN = "Server Administrator"
     MODERATOR = "Server Moderator"
     PLAYER = "Normal"
 
@@ -32,6 +34,14 @@ class Player(BaseModel):
             callsign=data.get("Callsign"),
             team=data.get("Team"),
         )
+
+
+class RemoteManagment(Player):
+    name: Literal["Remote Server"] = "Remote Server"
+    id: Literal[0] = 0
+    permissions: Literal[Permission.REMOTE] = Permission.REMOTE
+    callsign: Literal[None] = None
+    team: Literal[None] = None
 
 
 class BannedPlayer(BaseModel):
@@ -61,9 +71,13 @@ class CommandLog(BaseModel):
 
     @classmethod
     def from_dict(cls, data: dict, client: ErlcServerClient):
-        plr_id = data["Player"].split(":")[1]
+        if data["Player"] == "Remote Server":
+            player = RemoteManagment()
+        else:
+            plr_id = data["Player"].split(":")[1]
+            player = client.server.get_player(plr_id) or plr_id
         return cls(
-            player=client.server.get_player(plr_id) or plr_id,
+            player=player,
             time=datetime.fromtimestamp(data["Timestamp"]),
             command=data["Command"],
         )
@@ -76,9 +90,11 @@ class KillLog(BaseModel):
 
     @classmethod
     def from_dict(cls, data: dict, client: ErlcServerClient):
+        killer = data["Killer"].split(":")[1]
+        victim = data["Killed"].split(":")[1]
         return cls(
-            killer=client.server.get_player(data["Killer"].split(":")[1]),
-            victim=client.server.get_player(data["Killed"].split(":")[1]),
+            killer=client.server.get_player(killer) or killer,
+            victim=client.server.get_player(victim) or victim,
             time=datetime.fromtimestamp(data["Timestamp"]),
         )
 
@@ -156,6 +172,9 @@ class Server(BaseModel):
     @property
     def vehicles(self) -> list[Vehicle]:
         return self.client.server.get_server_vehicles()
+
+    def run_command(self, command: str) -> str:
+        return self.client.server.run_server_command(command)
 
     def refresh(self) -> "Server":
         """

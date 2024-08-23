@@ -29,12 +29,12 @@ Make sure you have [Poetry](https://python-poetry.org/docs/#installation) instal
 Dive right in with this sample code to see how the wrapper works:
 
 ```python
-from erlc import ErlcServerClient
+from erlc import ErlcClient
 
-client = ErlcServerClient("YOUR_API_KEY_HERE")
+client = ErlcClient()
+server = client.get_server("...")
 
 # 🚓 Get Server Info
-server = client.server.get_server()
 print(server)
 
 # 🔍 Explore Join Logs
@@ -61,8 +61,9 @@ print(server.players)
 # 🚗 Get Vehicles
 print(server.vehicles)
 
-# 📝 Run a Command
-print(server.run_command(":h Hello, World!"))
+# 💻 Run commands
+server.run_command(":m Hello World!")
+
 ```
 
 This is just a glimpse of what you can do! Whether you're managing a server or simply exploring the data, this wrapper has you covered.

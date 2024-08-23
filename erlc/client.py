@@ -5,6 +5,15 @@ from erlc.constants import BASE_URL
 import erlc.execptions as execptions
 
 
+class ErlcClient:
+    def __init__(self, base_url: str = None) -> None:
+        self.base_url = base_url or BASE_URL
+        self.session = requests.Session()
+
+    def get_server(self, key: str):
+        return ErlcServerClient(key, self.base_url).server.get_server()
+
+
 class ErlcServerClient:
     def __init__(self, api_key: str, base_url: str = None) -> None:
         self.api_key = api_key
