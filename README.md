@@ -1,8 +1,10 @@
 # 🚓 ERLC API Wrapper 🚒
-
 ![License](https://img.shields.io/github/license/AJXD2/erlc-api)
 ![Python Version](https://img.shields.io/badge/python-3.8%2B-blue)
 ![Contributions](https://img.shields.io/badge/contributions-welcome-brightgreen.svg)
+
+> [!IMPORTANT]
+> This project is **NOT FINISHED** in its current state and will likely undergo **BREAKING** changes in the near future as I experiment with it.
 
 Welcome to the **ERLC API Wrapper** – your go-to Python library for interacting with the **Emergency Response: Liberty County** API. Whether you're building bots, dashboards, or integrating with other systems, this wrapper makes it effortless to retrieve and manipulate game data.
 
